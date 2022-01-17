@@ -21,7 +21,7 @@ class LogIn : AppCompatActivity() {
         edtEmail = findViewById(R.id.edtEmail)
         edtPassword = findViewById(R.id.edtPassword)
         btnLogin = findViewById(R.id.btnLogin)
-        btnSignup = findViewById(R.id.btnSignup)
+        btnSignup = findViewById(R.id.btnRegister)
 
         // opening sign up activity
         btnSignup.setOnClickListener{
