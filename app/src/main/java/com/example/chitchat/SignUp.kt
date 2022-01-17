@@ -35,24 +35,24 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
         // button to register user
         btnRegister.setOnClickListener{
             Toast.makeText(applicationContext, "Registering",Toast.LENGTH_SHORT).show()
+            val name = edtName.text.toString()
             val email = edtEmail.text.toString()
             val password = edtPassword.text.toString()
             val age = edtAge.text.toString()
 
-            if (email.trim().isNotEmpty() && password.trim().isNotEmpty() && age.trim().isNotEmpty() && age.toInt()>15)
+            if (email.trim().isNotEmpty() && password.trim().isNotEmpty() && age.trim().isNotEmpty()) {
                 signUp(email, password)
+            }
             // handling empty text fields
             else {
+                if (name.trim().isEmpty())
+                    edtName.error = "Name cannot be empty"
                 if (email.trim().isEmpty())
-                    edtEmail.error = "Username cannot be empty"
+                    edtEmail.error = "Email cannot be empty"
                 if (password.trim().isEmpty())
                     edtPassword.error = "Password cannot be empty"
                 if (age.trim().isEmpty()){
                     edtAge.error = "Age cannot be empty"
-                }
-                if (age.toInt() <= 15){
-                    edtAge.error = "Age must be more than 15"
-//                    Toast.makeText(this@SignUp, "Age must be more than 15", Toast.LENGTH_SHORT).show()
                 }
             }
         }
