@@ -21,6 +21,8 @@ class LogIn : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        supportActionBar?.hide()
+
         // initializing firebase authentication
         mAuth = FirebaseAuth.getInstance()
 

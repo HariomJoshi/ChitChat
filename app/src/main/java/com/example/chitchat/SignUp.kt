@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+        supportActionBar?.hide()
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -40,7 +41,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
             val password = edtPassword.text.toString()
             val age = edtAge.text.toString()
 
-            if (email.trim().isNotEmpty() && password.trim().isNotEmpty() && age.trim().isNotEmpty()) {
+            if (name.trim().isNotEmpty() &&  email.trim().isNotEmpty() && password.trim().isNotEmpty() && age.trim().isNotEmpty() && password.trim().length >=6 && age.trim().toInt() >=16) {
                 signUp(email, password)
             }
             // handling empty text fields
@@ -51,9 +52,12 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
                     edtEmail.error = "Email cannot be empty"
                 if (password.trim().isEmpty())
                     edtPassword.error = "Password cannot be empty"
-                if (age.trim().isEmpty()){
+                if(password.trim().length<6)
+                    edtPassword.error = "Password must be at least 6 digits"
+                if (age.trim().isEmpty())
                     edtAge.error = "Age cannot be empty"
-                }
+                if(age.trim().toInt()<16)
+                    edtAge.error = "Age must be bigger than 16"
             }
         }
 
@@ -69,7 +73,8 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
                     val intent = Intent(this@SignUp, MainActivity:: class.java)
                     startActivity(intent)
 
-                } else {
+                }
+                else {
                     // display error message
                     Toast.makeText(this@SignUp, "Some error occured", Toast.LENGTH_SHORT).show()
 
