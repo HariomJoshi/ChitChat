@@ -1,4 +1,4 @@
-    package com.example.chitchat
+package com.example.chitchat
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +9,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
-
-    class SignUp : AppCompatActivity() {
+class SignUp : AppCompatActivity() {
 
     // following items would be initialized later
     private lateinit var edtName: EditText
@@ -35,7 +34,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
         // button to register user
         btnRegister.setOnClickListener{
-            Toast.makeText(applicationContext, "Registering",Toast.LENGTH_SHORT).show()
+//            Toast.makeText(applicationContext, "Registering",Toast.LENGTH_SHORT).show()
             val name = edtName.text.toString()
             val email = edtEmail.text.toString()
             val password = edtPassword.text.toString()
@@ -63,7 +62,6 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
     }
 
-
     private fun signUp(email: String, password: String) {
         // logic of creating user
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -76,7 +74,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
                 }
                 else {
                     // display error message
-                    Toast.makeText(this@SignUp, "Some error occured", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignUp, "Some error occurred", Toast.LENGTH_SHORT).show()
 
                 }
             }

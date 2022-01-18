@@ -61,10 +61,9 @@ class LogIn : AppCompatActivity() {
                     val intent = Intent(this@LogIn, MainActivity::class.java)
                     startActivity(intent);
 
-                } else {
+                } else
                     // If sign in fails, display a message to the user.
                     Toast.makeText(this@LogIn, "User does not exist.", Toast.LENGTH_SHORT).show()
-                }
         }
     }
 }
