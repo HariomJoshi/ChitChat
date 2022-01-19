@@ -20,7 +20,7 @@
         android:fontFamily="monospace"
         android:paddingStart="20dp"
         android:paddingLeft="20dp"
-        android:text="Pra-Gay"
+        android:text="Name"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#25D42C"
         android:textSize="34sp"
