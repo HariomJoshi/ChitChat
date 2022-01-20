@@ -53,13 +53,18 @@ class LogIn : AppCompatActivity() {
             }
         }
     }
+
+    // login logic
     private fun login(email: String, password: String){
         mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // if login successful, go to MainActivity
                     val intent = Intent(this@LogIn, MainActivity::class.java)
-                    startActivity(intent);
+
+                    // finish current activity
+                    finish()
+                    startActivity(intent)
 
                 } else
                     // If sign in fails, display a message to the user.

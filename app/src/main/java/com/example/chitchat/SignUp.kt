@@ -3,21 +3,25 @@ package com.example.chitchat
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class SignUp : AppCompatActivity() {
 
-    // following items would be initialized later
     private lateinit var edtName: EditText
     private lateinit var edtAge: EditText
     private lateinit var edtEmail: EditText
     private lateinit var edtPassword: EditText
     private lateinit var btnRegister: Button
+    private lateinit var profileImage: View
+
     private lateinit var mAuth : FirebaseAuth
+    private lateinit var dbRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,17 +35,17 @@ class SignUp : AppCompatActivity() {
         edtEmail = findViewById(R.id.edtEmail)
         edtPassword = findViewById(R.id.edtPassword)
         btnRegister = findViewById(R.id.btnRegister)
+        profileImage = findViewById(R.id.shapeableImageView)
 
         // button to register user
         btnRegister.setOnClickListener{
-//            Toast.makeText(applicationContext, "Registering",Toast.LENGTH_SHORT).show()
             val name = edtName.text.toString()
             val email = edtEmail.text.toString()
             val password = edtPassword.text.toString()
             val age = edtAge.text.toString()
 
             if (name.trim().isNotEmpty() &&  email.trim().isNotEmpty() && password.trim().isNotEmpty() && age.trim().isNotEmpty() && password.trim().length >=6 && age.trim().toInt() >=16) {
-                signUp(email, password)
+                signUp(name, email, password)
             }
             // handling empty text fields
             else {
@@ -62,18 +66,23 @@ class SignUp : AppCompatActivity() {
 
     }
 
-    private fun signUp(email: String, password: String) {
-        // logic of creating user
+    // logic of creating user
+    private fun signUp(name:String, email: String, password: String) {
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+
+                    // if sign up successful, add user to database
+                    addUserToDatabase(name, email, mAuth.currentUser?.uid!!)
+
                     // code for jumping to home
                     val intent = Intent(this@SignUp, MainActivity:: class.java)
+                    // finish current activity
+                    finish()
                     startActivity(intent)
-
                 }
+                // display error message
                 else {
-                    // display error message
                     Toast.makeText(this@SignUp, "Some error occurred", Toast.LENGTH_SHORT).show()
 
                 }
@@ -81,6 +90,14 @@ class SignUp : AppCompatActivity() {
 
     }
 
+    // self explanatory
+    private fun addUserToDatabase(name: String, email: String, uid: String) {
+        dbRef = FirebaseDatabase.getInstance().getReference()
+
+        // child adds a node to the database
+        // we create nodes using uid so that we have a unique node for every user
+        dbRef.child("user").child(uid).setValue(User(name,email,uid))
+    }
 
 
 }

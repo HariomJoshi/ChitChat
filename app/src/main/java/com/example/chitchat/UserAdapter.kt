@@ -6,30 +6,36 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 
 class UserAdapter(val context: Context, val userList: ArrayList<User>):
-    RecyclerView.Adapter<UserAdapter .ViewHolder>() {
+    RecyclerView.Adapter<UserAdapter .UserViewHolder>() {
 
-
+    // returns the size of userList
     override fun getItemCount(): Int {
         return userList.size
     }
 
     //creating view holder
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.user_layout, parent, false)
-        return ViewHolder(view)
+        return UserViewHolder(view)
     }
 
-    // do this after creating viewholder object
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    // this updates the name_textview of all the views inside the recylerView
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val currentUser = userList[position]
-        holder.textName.text = currentUser.name
+        holder.tvName.text = currentUser.name
+        Glide.with(context).load(currentUser.profileImage)
+            .placeholder(R.drawable.avatar)
+            .into(holder.profileImage)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val textName = itemView.findViewById<TextView>(R.id.name)
+    // view holder class for displaying users
+    class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        // here, itemView is user_layout.xml
+        val tvName: TextView = itemView.findViewById(R.id.tvName)
+        val profileImage: ShapeableImageView = itemView.findViewById(R.id.profileImage)
     }
 }
