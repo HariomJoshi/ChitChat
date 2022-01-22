@@ -35,12 +35,16 @@ class MainActivity : AppCompatActivity() {
 
                 // this clears the userList in case a new user is added and a new, updated
                 // list is created using a for loop
+                // because if we will run for loop without clearing the previous data so the values inside will be repeated
+                // each type the for loop runs
                 userList.clear()
 
                 // getValue of every user in specified node(pathString) and add it to userList
                 for(user in snapshot.children){
                     val currentUser = user.getValue(User::class.java)
-                    userList.add(currentUser!!)
+                    if(mAuth.currentUser?.uid != currentUser?.uid){
+                        userList.add(currentUser!!)
+                    }
                 }
 
                 // notify adapter of new changes in data, so recyclerView can be updated
@@ -55,10 +59,8 @@ class MainActivity : AppCompatActivity() {
 
         userList = ArrayList()
         adapter = UserAdapter(this, userList)
-
         userRecyclerView = findViewById(R.id.userRecyclerView)
         userRecyclerView.layoutManager = GridLayoutManager(this@MainActivity, 2)
-
         userRecyclerView.adapter = adapter
     }
 
