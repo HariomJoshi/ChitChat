@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".chatActivity">
+    tools:context=".ChatActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
@@ -27,10 +27,11 @@
             android:id="@+id/messageBox"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:hint="Type a message"
             android:layout_weight="90"
             android:background="@drawable/message_box_background"
-            android:textAlignment="center" />
+            android:hint="Type a message"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart" />
 
         <ImageView
             android:id="@+id/send"

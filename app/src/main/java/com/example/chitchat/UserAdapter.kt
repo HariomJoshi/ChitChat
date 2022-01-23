@@ -1,6 +1,7 @@
 package com.example.chitchat
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.firebase.auth.FirebaseAuth
 
 class UserAdapter(val context: Context, val userList: ArrayList<User>):
     RecyclerView.Adapter<UserAdapter .UserViewHolder>() {
@@ -30,6 +32,17 @@ class UserAdapter(val context: Context, val userList: ArrayList<User>):
         Glide.with(context).load(currentUser.profileImage)
             .placeholder(R.drawable.avatar)
             .into(holder.profileImage)
+
+        // start chatActivity on clicking user name
+        holder.itemView.setOnClickListener{
+            val intent = Intent(context, ChatActivity::class.java)
+
+            // send these details to the chatActivity
+            intent.putExtra("name", currentUser.name)
+            intent.putExtra("uid", currentUser.uid)
+
+            context.startActivity(intent)
+        }
     }
 
     // view holder class for displaying users

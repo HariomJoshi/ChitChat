@@ -1,6 +1,6 @@
 package com.example.chitchat
 
-class message {
+class Message {
     var message: String? = null
     var senderID: String? = null
 

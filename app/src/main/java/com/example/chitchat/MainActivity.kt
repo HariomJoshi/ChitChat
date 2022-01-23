@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
                 // this clears the userList in case a new user is added and a new, updated
                 // list is created using a for loop
                 // because if we will run for loop without clearing the previous data so the values inside will be repeated
-                // each type the for loop runs
+                // each time the for loop runs
                 userList.clear()
 
                 // getValue of every user in specified node(pathString) and add it to userList
