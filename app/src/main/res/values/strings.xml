@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ChitChat</string>
+    <string name="signUp">Sign up</string>
+    <string name="nameID">Name</string>
+    <string name="ageID">Age</string>
+    <string name="emailID">Email</string>
+    <string name="passID">Password</string>
+    <string name="register">Register</string>
+</resources>
