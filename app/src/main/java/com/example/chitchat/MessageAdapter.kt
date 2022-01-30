@@ -50,12 +50,11 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>):
             // do stuff for sent view holder
 
             val viewHolder = holder as sentViewHolder  // typecasting holder as sendViewHolder
-            holder.sentMessage.text = currentMessage.message
-
+            holder.sentMessage.text = currentMessage.message?.trim()
 
         }else{
             // do stuff for receive view holder
-            val viewHolder= holder as receiveViewHolder // typecaseting holder as revieveViewHolder
+            val viewHolder= holder as receiveViewHolder // typecasting holder as revieveViewHolder
             holder.receiveMessage.text = currentMessage.message
 
         }

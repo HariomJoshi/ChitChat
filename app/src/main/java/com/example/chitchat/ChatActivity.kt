@@ -77,18 +77,20 @@ class ChatActivity : AppCompatActivity() {
             val message = messageBox.text.toString()
 
             // object of Message.kt
-            val messageObject = Message(message, senderUid)
+            if(message.trim().isNotEmpty()){
+                val messageObject = Message(message, senderUid)
 
-            // .push() creates a unique node everytime it is called
-            // updating senderRoom
-            dbRef.child("chats").child(senderRoom!!).child("messages").push()
-                .setValue(messageObject).addOnSuccessListener {
-                    // updating receiverRoom
-                    dbRef.child("chats").child(receiverRoom!!).child("messages").push()
-                        .setValue(messageObject)
-                }
-            // clear message box after message is sent
-            messageBox.setText("")
+                // .push() creates a unique node everytime it is called
+                // updating senderRoom
+                dbRef.child("chats").child(senderRoom!!).child("messages").push()
+                    .setValue(messageObject).addOnSuccessListener {
+                        // updating receiverRoom
+                        dbRef.child("chats").child(receiverRoom!!).child("messages").push()
+                            .setValue(messageObject)
+                    }
+                // clear message box after message is sent
+                messageBox.setText("")
+            }
         }
 
     }
