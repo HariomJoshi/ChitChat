@@ -16,7 +16,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import java.io.File
 
 class SignUp : AppCompatActivity() {
 
@@ -27,7 +26,7 @@ class SignUp : AppCompatActivity() {
     private lateinit var btnRegister: Button
     private lateinit var profileImage: ImageView
 
-    private lateinit var imageUri: Uri
+    private var imageUri: Uri? = null
 
     private lateinit var mAuth : FirebaseAuth
     private lateinit var dbRef: DatabaseReference
@@ -96,11 +95,17 @@ class SignUp : AppCompatActivity() {
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-
                     // if sign up successful, add user to database
-                    addUserToDatabase(name, email, mAuth.currentUser?.uid!!)
+
+                    // if user selects image, do this:
                     if(imageUri != null) {
-                        uploadImage(name)
+                        Log.d("Debug","imageUri is not null")
+                        addUserToDatabaseWithProfilePic(name, email, mAuth.currentUser?.uid!!)
+                    }
+                    // if user does not select any image, do this
+                    else{
+                        Log.d("Debug","imageUri is null")
+                        addUserToDatabase(name, email, mAuth.currentUser?.uid!!)
                     }
 
                     // code for jumping to home
@@ -112,33 +117,44 @@ class SignUp : AppCompatActivity() {
                 // display error message
                 else {
                     Toast.makeText(this@SignUp, "Some error occurred", Toast.LENGTH_SHORT).show()
-
                 }
             }
-
     }
 
-    private fun uploadImage(name: String) {
+
+    private fun addUserToDatabaseWithProfilePic(name: String, email: String, uid: String) {
+        dbRef = FirebaseDatabase.getInstance().reference
         storageRef = FirebaseStorage.getInstance().reference
 
-        val imageRef = storageRef.child("Profile Pictures").child("$name ${imageUri.lastPathSegment}")
-        val uploadTask = imageRef.putFile(imageUri)
+        var downloadUri: String
 
-        uploadTask.addOnFailureListener {
-            Log.d("Profile Image", "Failed to upload")
-        }.addOnSuccessListener { taskSnapshot ->
-            Log.d("Profile Image","Uploaded successfully")
+        val imageRef = storageRef.child("Profile Pictures").child("$name ${imageUri!!.lastPathSegment}")
+
+        // putFile() adds image to firebase storage
+        imageRef.putFile(imageUri!!).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // if image is uploaded successfully, get a downloadUrl
+                imageRef.downloadUrl.addOnSuccessListener {
+                    downloadUri = it.toString()
+
+                    Log.d("Profile Image", "DownloadUri is: $downloadUri")
+
+                    // add downloadUri to user details in Realtime Database
+                    dbRef.child("user").child(uid).setValue(User(name, email, uid, downloadUri))
+                }.addOnFailureListener {
+                    Log.d("Profile Image", "Failed to retrieve imageUrl")
+                }
+            } else
+                Log.d("Profile Image", "Failed to upload image")
         }
     }
 
-    // self explanatory
     private fun addUserToDatabase(name: String, email: String, uid: String) {
         dbRef = FirebaseDatabase.getInstance().reference
 
         // child adds a node to the database
         // we create nodes using uid so that we have a unique node for every user
-        dbRef.child("user").child(uid).setValue(User(name,email,uid))
+        dbRef.child("user").child(uid).setValue(User(name,email,uid,""))
     }
-
 
 }
