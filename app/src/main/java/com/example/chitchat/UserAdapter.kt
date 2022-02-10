@@ -31,6 +31,7 @@ class UserAdapter(val context: Context, val userList: ArrayList<User>):
         holder.tvName.text = currentUser.name
         Glide.with(context)
             .load(currentUser.profileImage)
+            .circleCrop()
             .placeholder(R.drawable.avatar)
             .into(holder.profileImage)
 
